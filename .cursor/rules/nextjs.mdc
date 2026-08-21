@@ -1,0 +1,43 @@
+---
+description: Next.js App Router standards — Server Components, data fetching, routing
+globs: "**/app/**/*.{ts,tsx,js,jsx}"
+alwaysApply: false
+---
+
+# Next.js App Router
+
+## Defaults
+
+- Default to Server Components. Add `"use client"` only for interactivity, browser APIs, or hooks.
+- Prefer the App Router (`app/`) over Pages Router for new work.
+- Colocate `loading.tsx`, `error.tsx`, `not-found.tsx` with routes that need them.
+
+## Data & Caching
+
+- Fetch in Server Components or Route Handlers — not in `useEffect` for initial page data.
+- Use `fetch` with explicit cache intent: `cache: 'force-cache' | 'no-store'` or `next: { revalidate }`.
+- Mutate with Server Actions or Route Handlers; revalidate with `revalidatePath` / `revalidateTag`.
+
+## Boundaries
+
+```tsx
+// ❌ BAD — client component fetching initial data
+"use client";
+useEffect(() => { fetch("/api/items").then(...) }, []);
+
+// ✅ GOOD — server component
+export default async function Page() {
+  const items = await getItems();
+  return <ItemList items={items} />;
+}
+```
+
+- Keep secrets (`process.env` without `NEXT_PUBLIC_`) server-only.
+- Never expose API keys in Client Components or `NEXT_PUBLIC_*` unless intentionally public.
+
+## Files
+
+- `page.tsx` — UI for a route
+- `layout.tsx` — shared chrome (keep lean)
+- `route.ts` — HTTP handlers
+- `actions.ts` — Server Actions (mark `"use server"`)

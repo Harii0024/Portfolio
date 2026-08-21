@@ -1,0 +1,17 @@
+---
+description: Universal engineering standards for all code in this workspace
+alwaysApply: true
+---
+
+# Core Engineering
+
+- Prefer clarity over cleverness. Names must reveal intent.
+- Change only what the task requires. No drive-by refactors.
+- Match existing project patterns before inventing new ones.
+- Handle errors explicitly; never swallow exceptions silently.
+- Do not hardcode secrets, tokens, or credentials.
+- Prefer small, focused functions and modules over large god-objects.
+- Add or update tests when changing behavior.
+- Document non-obvious decisions in code comments sparingly; prefer self-explanatory code.
+- Prefer typed interfaces and validated inputs at system boundaries.
+- Keep PRs and commits focused: one concern per change when possible.

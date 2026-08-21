@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - apps/api/.env
+    environment:
+      BACKEND_URL: http://127.0.0.1:8000
+      FRONTEND_URL: http://localhost:3000
+      CORS_ORIGINS: http://localhost:3000
+      COOKIE_SECURE: "false"
+      PORT: "3000"
+      API_PORT: "8000"

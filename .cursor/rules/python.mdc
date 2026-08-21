@@ -1,0 +1,54 @@
+---
+description: Python coding standards — typing, structure, APIs, async, packaging
+globs: "**/*.{py,pyi,toml}"
+alwaysApply: false
+---
+
+# Python Standards
+
+## Style
+
+- Python 3.11+ idioms. Use `from __future__ import annotations` when helpful.
+- Type every public function signature. Prefer `list[str]`, `dict[str, T]`, `|` unions.
+- Use `ruff` for lint/format when available; follow PEP 8 naming (`snake_case`).
+- Prefer dataclasses / Pydantic models over raw dicts at boundaries.
+
+## Structure
+
+```text
+src/<package>/
+  __init__.py
+  api/          # HTTP or CLI entrypoints
+  domain/       # business logic
+  infra/        # DB, HTTP clients, filesystem
+  schemas/      # Pydantic / TypedDict
+tests/
+```
+
+- Business logic must not import framework details (FastAPI, Django) when avoidable.
+- Raise domain-specific exceptions; map them at the API layer.
+
+## APIs & Errors
+
+```python
+# ❌ BAD
+except Exception:
+    return {"error": "failed"}
+
+# ✅ GOOD
+except UserNotFoundError as e:
+    raise HTTPException(status_code=404, detail=str(e)) from e
+```
+
+- Validate input with Pydantic / annotated types at the edge.
+- Use structured logging (`logger.info("...", extra={...})`), never `print` in library code.
+
+## Async
+
+- Do not mix blocking I/O inside `async def` without `asyncio.to_thread` or a proper async client.
+- Prefer `httpx.AsyncClient` / async DB drivers for async services.
+
+## Testing
+
+- `pytest` + fixtures. Name tests `test_<behavior>_<condition>`.
+- Prefer unit tests for domain; integration tests for API/DB boundaries.

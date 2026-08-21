@@ -1,0 +1,33 @@
+---
+description: TypeScript and React conventions for Next.js / frontend code
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript & React
+
+## TypeScript
+
+- Prefer `strict` mode. Avoid `any`; use `unknown` + narrowing when needed.
+- Prefer `type` for unions/intersections; `interface` for extendable object shapes used by components/APIs.
+- Export shared types from a clear module (`types.ts` or domain folder) — no duplicate inline shapes.
+- Use discriminated unions for state machines and API result variants.
+
+## React
+
+- Functional components only. Extract reusable logic into custom hooks (`useX`).
+- Keep components focused: presentational UI vs data/container concerns.
+- Derive state when possible; avoid syncing props into state unless intentional.
+- Prefer controlled inputs for forms unless a library (e.g. React Hook Form) is already in use.
+- Keys must be stable and unique — never array index for dynamic lists that reorder.
+
+## Imports & Modules
+
+- Prefer absolute imports (`@/`) when the project configures them.
+- Do not export default from utility modules; named exports improve discoverability.
+- Client/server boundary: do not import server-only modules into Client Components.
+
+## Errors & UX
+
+- Surface actionable error messages to users; log technical detail server-side.
+- Loading and empty states are required for async UI that users wait on.

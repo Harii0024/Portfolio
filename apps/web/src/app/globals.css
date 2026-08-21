@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+:root {
+  /* Defaults — overridden by VisualTheme from site settings */
+  --background: #0b131e;
+  --foreground: #f2f2f0;
+  --accent: #5b8def;
+  --accent-warm: #93c5fd;
+  --accent-muted: #121a28;
+  --border: rgba(255, 255, 255, 0.09);
+  --muted: #8c8c88;
+  --radius: 1.5rem;
+  --mesh-opacity: 0.4;
+  --font-display: var(--font-display-face), Sora, system-ui, sans-serif;
+  --font-body: var(--font-body-face), "DM Sans", system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), "JetBrains Mono", ui-monospace, monospace;
+
+  --nav-bg: rgba(12, 12, 12, 0.45);
+  --nav-text: #f2f2f0;
+  --nav-accent: #ee3f2c;
+
+  --hero-overlay: linear-gradient(
+    115deg,
+    rgba(5, 5, 5, 0.94) 0%,
+    rgba(5, 5, 5, 0.55) 38%,
+    rgba(5, 5, 5, 0.08) 62%,
+    rgba(5, 5, 5, 0.55) 100%
+  );
+  --hero-headline: #f7f7f4;
+  --hero-subtext: #9a9a94;
+  --hero-cta-bg: #f7f7f4;
+  --hero-cta-text: #050505;
+
+  --twin-panel-bg: rgba(18, 18, 18, 0.55);
+  --twin-panel-border: rgba(255, 255, 255, 0.1);
+  --twin-input-bg: rgba(8, 8, 8, 0.9);
+  --twin-accent: #ee3f2c;
+
+  --exp-timeline: #ee3f2c;
+  --exp-card-bg: transparent;
+  --exp-title: #f7f7f4;
+  --exp-meta: #8c8c88;
+  --exp-bullet: #c8c8c2;
+
+  --skills-chip-bg: rgba(255, 255, 255, 0.04);
+  --skills-chip-text: #e8e8e2;
+  --skills-group-title: #f7f7f4;
+
+  --projects-surface: rgba(16, 16, 16, 0.5);
+  --projects-title: #f7f7f4;
+  --projects-metric: #f5a524;
+  --projects-stack-chip: rgba(255, 255, 255, 0.05);
+
+  --edu-surface: rgba(16, 16, 16, 0.45);
+  --edu-title: #f7f7f4;
+  --edu-meta: #8c8c88;
+
+  --footer-bg: transparent;
+  --footer-text: #6e6e6a;
+  --footer-link: #ee3f2c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+.has-cinematic-cursor,
+.has-cinematic-cursor * {
+  cursor: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+}
+
+/* Liquid glass — Draftly Mindloop / Power AI */
+.liquid-glass {
+  background: var(--nav-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.glass-panel {
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Clipped-corner CTAs — Draftly Targo vibe */
+.clip-cta {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% 100%,
+    12px 100%,
+    0 calc(100% - 12px)
+  );
+}
+
+.section-pad {
+  padding-block: clamp(4.5rem, 12vw, 8rem);
+}
+
+.film-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Marquee */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x var(--marquee-duration, 36s) linear infinite;
+}
+
+.marquee-reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee-pause:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.85rem;
+  padding-right: 0.85rem;
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes film-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(2%, -1.5%, 0);
+  }
+}
+
+.film-vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 45%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  opacity: 0.55;
+}
+
+.film-grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ambient-mesh * {
+    animation: none !important;
+  }
+
+  .film-vignette,
+  .film-grain {
+    display: none;
+  }
+
+  .has-cinematic-cursor,
+  .has-cinematic-cursor * {
+    cursor: auto !important;
+  }
+
+  .cinematic-cursor-ring,
+  .cinematic-cursor-dot {
+    display: none !important;
+  }
+}

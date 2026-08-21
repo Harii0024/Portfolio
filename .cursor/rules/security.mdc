@@ -1,0 +1,17 @@
+---
+description: Security baseline for web and API code (Python, Next.js, TypeScript)
+globs: "**/*.{py,ts,tsx,js,jsx}"
+alwaysApply: false
+---
+
+# Security Baseline
+
+- Never commit secrets. Use env vars / secret managers. Add `.env*` to `.gitignore` (except `.env.example`).
+- Validate and sanitize all untrusted input at system boundaries.
+- Use parameterized queries / ORM APIs — never string-concatenate SQL.
+- Escape or sanitize HTML to prevent XSS; prefer framework defaults (React JSX escaping).
+- Enforce authz on every sensitive route/action — not only on the UI.
+- Set secure cookie flags (`HttpOnly`, `Secure`, `SameSite`) for session cookies.
+- Prefer least-privilege IAM and scoped API tokens.
+- Log security-relevant events; never log passwords, tokens, or full PII unnecessarily.
+- Dependency updates: pin versions thoughtfully; review high-severity CVEs before shipping.

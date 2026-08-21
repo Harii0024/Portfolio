@@ -1,0 +1,26 @@
+{
+  "name": "hari-ai-works",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm exec concurrently -k -n web,api -c cyan,magenta \"pnpm dev:web\" \"pnpm dev:api\"",
+    "dev:web": "pnpm --filter @hari/web dev",
+    "dev:api": "uv run --directory apps/api uvicorn app.main:app --reload --host 127.0.0.1 --port 8000",
+    "build": "pnpm --filter @hari/web build",
+    "start": "node scripts/start-prod.mjs",
+    "start:web": "pnpm --filter @hari/web start",
+    "start:api": "uv run --directory apps/api uvicorn app.main:app --host 127.0.0.1 --port 8000",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm --filter @hari/web exec tsc --noEmit",
+    "sync": "pnpm install && uv sync --directory apps/api",
+    "docker:build": "docker build -t hari-ai-works .",
+    "docker:up": "docker compose up --build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
