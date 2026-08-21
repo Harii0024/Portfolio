@@ -1,0 +1,43 @@
+# Render Blueprint — one service runs Next.js + FastAPI (root Dockerfile).
+# Dashboard: https://dashboard.render.com → New → Blueprint
+# Docs: docs/RENDER_DEPLOY.md
+
+services:
+  - type: web
+    name: hari-ai-works
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ENVIRONMENT
+        value: production
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: API_PORT
+        value: "8000"
+      - key: BACKEND_URL
+        value: http://127.0.0.1:8000
+      # Set these in the Render dashboard (Do not commit secrets).
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
+      - key: ADMIN_SETUP_KEY
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: FACE_MATCH_THRESHOLD
+        value: "0.55"
+      - key: MAGIC_LINK_TTL_SECONDS
+        value: "900"
