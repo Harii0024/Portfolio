@@ -21,6 +21,7 @@ RUN pnpm install --frozen-lockfile
 
 # Install Python deps
 COPY apps/api/pyproject.toml apps/api/pyproject.toml
+COPY apps/api/README.md apps/api/README.md
 COPY apps/api/app apps/api/app
 RUN uv sync --directory apps/api --no-dev
 
