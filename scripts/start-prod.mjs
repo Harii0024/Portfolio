@@ -4,6 +4,8 @@
  * Browser hits one origin; Next rewrites /api/* → http://127.0.0.1:8000
  */
 import { spawn } from "node:child_process";
+import fs from "node:fs";
+import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -35,19 +37,52 @@ function run(cmd, args, cwd, name) {
   return child;
 }
 
-console.log(`Starting API on 127.0.0.1:${apiPort} (internal)`);
-console.log(`Starting web on 0.0.0.0:${webPort} (public)`);
+function waitForPort(port, timeoutMs = 120_000) {
+  const started = Date.now();
+  return new Promise((resolve, reject) => {
+    const attempt = () => {
+      const socket = net.connect({ port: Number(port), host: "127.0.0.1" });
+      const fail = () => {
+        socket.destroy();
+        if (Date.now() - started > timeoutMs) {
+          reject(new Error(`API did not listen on 127.0.0.1:${port} within ${timeoutMs}ms`));
+          return;
+        }
+        setTimeout(attempt, 500);
+      };
+      socket.once("connect", () => {
+        socket.removeListener("error", fail);
+        socket.end();
+        resolve();
+      });
+      socket.once("error", fail);
+    };
+    attempt();
+  });
+}
 
-run(
-  "uv",
-  ["run", "--directory", "apps/api", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", apiPort],
+const venvUvicorn = path.join(
   root,
-  "api",
+  "apps/api/.venv",
+  isWin ? "Scripts/uvicorn.exe" : "bin/uvicorn",
 );
 
-setTimeout(() => {
-  run("pnpm", ["--filter", "@hari/web", "start"], root, "web");
-}, 1500);
+console.log(`Starting API on 127.0.0.1:${apiPort} (internal)`);
+
+if (fs.existsSync(venvUvicorn)) {
+  run(venvUvicorn, ["app.main:app", "--host", "127.0.0.1", "--port", apiPort], path.join(root, "apps/api"), "api");
+} else {
+  run(
+    "uv",
+    ["run", "--directory", "apps/api", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", apiPort],
+    root,
+    "api",
+  );
+}
+
+await waitForPort(apiPort);
+console.log(`API is ready. Starting web on 0.0.0.0:${webPort} (public)`);
+run("pnpm", ["--filter", "@hari/web", "start"], root, "web");
 
 process.on("SIGINT", () => process.exit(0));
 process.on("SIGTERM", () => process.exit(0));
