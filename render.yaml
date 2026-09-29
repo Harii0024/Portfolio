@@ -4,7 +4,7 @@
 
 services:
   - type: web
-    name: hari-ai-works
+    name: hariharan-ai-works
     runtime: docker
     plan: free
     region: singapore
@@ -34,9 +34,9 @@ services:
       - key: SESSION_SECRET
         sync: false
       - key: FRONTEND_URL
-        sync: false
+        value: https://hariharan-ai-works.onrender.com
       - key: CORS_ORIGINS
-        sync: false
+        value: https://hariharan-ai-works.onrender.com
       - key: FACE_MATCH_THRESHOLD
         value: "0.55"
       - key: MAGIC_LINK_TTL_SECONDS
